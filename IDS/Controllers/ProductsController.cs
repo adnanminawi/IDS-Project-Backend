@@ -1,0 +1,95 @@
+﻿using IDS.Models.Dtos;
+using IDS.Models.Entities;
+using IDS.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace IDS.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductsController : ControllerBase
+    {
+        private readonly IProductService _service;
+
+        public ProductsController(IProductService service)
+        {
+            _service = service;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var products = await _service.GetAllAsync();
+            return Ok(products);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var product = await _service.GetByIdAsync(id);
+
+            if (product == null)
+                return NotFound();
+
+            return Ok(product);
+       
+        }
+        [HttpGet("{productId}/modules")]
+        public async Task<IActionResult> GetModulesByProduct(int productId)
+        {
+            var module = await _service.GetModulesByProductAsync(productId);
+
+            return Ok(module);
+        }
+        [HttpGet("{productId}/responsibilities")]
+        public async Task<IActionResult> GetResponsibilitiesByProduct(int productId)
+        {
+            var responsibility = await _service.GetResponsibilitiesByProductAsync(productId);
+
+            return Ok(responsibility);
+        }
+        [HttpGet("{productId}/documentations")]
+        public async Task<IActionResult> GetDocumentationByProductAsync(int productId)
+        {
+            var documentation = await _service.GetDocumentationByProductAsync(productId);
+
+
+            return Ok(documentation);
+        }
+        [HttpGet("{productId}/repositories")]
+        public async Task<IActionResult> GetRepositoriesByProductAsync(int productId)
+        {
+            var repository = await _service.GetRepositoriesByProductAsync(productId);
+
+            return Ok(repository);
+        }
+        [HttpGet("{productId}/deployments")]
+        public async Task<IActionResult> GetDeployments(int productId)
+        {
+            var deployments = await _service.GetDeploymentsByProductAsync(productId);
+
+            return Ok(deployments);
+        }
+
+
+        //POST
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateProductDto dto)
+        {
+            var newId= await _service.CreateAsync(dto);
+            return Created();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, CreateProductDto dto)
+        {
+            var success = await _service.UpdateAsync(id, dto);
+            if (!success)
+                return NotFound();
+
+            return NoContent();
+        }
+
+
+    }
+}

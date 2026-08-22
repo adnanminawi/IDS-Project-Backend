@@ -1,0 +1,12 @@
+﻿namespace IDS.Models.Entities
+{
+    public class Client
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string? Country { get; set; }
+        public string? Contact { get; set; }
+        public string? Status { get; set; }
+        public string? Notes { get; set; }
+    }
+}
