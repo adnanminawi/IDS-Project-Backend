@@ -31,7 +31,7 @@ namespace IDS.Controllers
                 return NotFound();
 
             return Ok(product);
-       
+
         }
         [HttpGet("{productId}/modules")]
         public async Task<IActionResult> GetModulesByProduct(int productId)
@@ -76,9 +76,11 @@ namespace IDS.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductDto dto)
         {
-            var newId= await _service.CreateAsync(dto);
+            var newId = await _service.CreateAsync(dto);
             return Created();
         }
+
+        //PUT
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, CreateProductDto dto)
@@ -91,5 +93,25 @@ namespace IDS.Controllers
         }
 
 
+        //Delete
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var deleted = await _service.DeleteAsync(id);
+                if (!deleted)
+                    return NotFound();
+
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+
+        }
     }
 }

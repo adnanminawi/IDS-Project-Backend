@@ -47,5 +47,12 @@ namespace IDS.Repositories
             var affectedRows = await connection.ExecuteAsync(sql, client);
             return affectedRows > 0;
         }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            using var connection = _factory.CreateConnection();
+            var sql = "DELETE FROM Clients WHERE Id = @Id";
+            var affectedRows = await connection.ExecuteAsync(sql, new { Id = id });
+            return affectedRows > 0;
+        }
     }
 }

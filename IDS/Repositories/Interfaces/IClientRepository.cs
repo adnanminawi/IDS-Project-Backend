@@ -9,5 +9,6 @@ namespace IDS.Repositories.Interfaces
         Task<IEnumerable<Deployment>> GetDeploymentsByClientAsync(int clientId);
         Task<int> CreateAsync(Client client);
         Task<bool> UpdateAsync(Client client);
+        Task<bool> DeleteAsync(int id);
     }
 }

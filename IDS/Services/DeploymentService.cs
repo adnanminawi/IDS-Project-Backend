@@ -81,5 +81,21 @@ namespace IDS.Services
 
             return await _repository.UpdateAsync(existingDeployment);
         }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var deployment = await _repository.GetByIdAsync(id);
+            if (deployment == null)
+                return false;
+            
+            var environments = await _repository.GetEnvironmentsByDeploymentIdAsync(id);
+            if (environments.Any())
+                throw new InvalidOperationException("Cannot delete a deployment that has environments.");
+
+            var modules = await _repository.GetModulesByDeploymentIdAsync(id);
+            if (modules.Any())
+                throw new InvalidOperationException("Cannot delete a deployment that has modules.");
+
+            return await _repository.DeleteAsync(id);
+        }
     }
 }

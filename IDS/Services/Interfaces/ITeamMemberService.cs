@@ -9,5 +9,6 @@ namespace IDS.Services.Interfaces
         Task<TeamMember?> GetByIdAsync(int id);
         Task<int> CreateAsync(CreateTeamMemberDto dto);
         Task<bool> UpdateAsync(int id, CreateTeamMemberDto dto);
+        Task<bool> DeleteAsync(int id);
     }
 }

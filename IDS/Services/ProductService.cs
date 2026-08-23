@@ -18,7 +18,7 @@ namespace IDS.Services
         {
             return await _repository.GetAllAsync();
         }
-         public async Task<Product?> GetByIdAsync(int id)
+        public async Task<Product?> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
         }
@@ -81,6 +81,23 @@ namespace IDS.Services
             existingProduct.Technologies = dto.Technologies;
             existingProduct.Notes = dto.Notes;
             return await _repository.UpdateAsync(existingProduct);
+        }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var product = await _repository.GetByIdAsync(id);
+            if (product == null)
+                return false;
+            //Guard
+            var deployments = await _repository.GetDeploymentsByProductAsync(id);
+            if (deployments.Any())
+                throw new InvalidOperationException("Cannot delete a product that has deployments.");
+
+            var modules = await _repository.GetModulesByProductAsync(id);
+            if (modules.Any())
+                throw new InvalidOperationException("Cannot delete a product that has modules.");
+
+            return await _repository.DeleteAsync(id);
+
         }
     }
 }

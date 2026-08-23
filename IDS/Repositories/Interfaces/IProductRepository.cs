@@ -13,6 +13,7 @@ namespace IDS.Repositories.Interfaces
         Task<IEnumerable<Deployment>> GetDeploymentsByProductAsync(int productId);
         Task<int> CreateAsync(Product product);
         Task<bool> UpdateAsync(Product product);
+        Task<bool> DeleteAsync(int id);
 
 
     }

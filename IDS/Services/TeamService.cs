@@ -44,5 +44,22 @@ namespace IDS.Services
             existingTeam.Name = dto.Name;
             return await _repository.UpdateAsync(existingTeam);
         }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var team = await _repository.GetByIdAsync(id);
+            if (team == null)
+                return false;
+
+            var teamMembers = await _repository.GetTeamMembersAsync(id);
+            if (teamMembers.Any())
+                throw new InvalidOperationException("Cannot delete team with members.");
+
+            var responsibilities = await _repository.GetResponsibilitiesByTeamAsync(id);
+            if (responsibilities.Any())
+                throw new InvalidOperationException("Cannot delete team assigned to a product.");
+
+            return await _repository.DeleteAsync(id);
+        }
     }
 }
+
