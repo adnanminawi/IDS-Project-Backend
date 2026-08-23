@@ -25,7 +25,18 @@ namespace IDS.Repositories
             using var connection = _factory.CreateConnection();
             return await connection.QueryFirstOrDefaultAsync<Team>("SELECT * FROM Teams WHERE Id = @Id", new { Id = id });
         }
-        public async Task<int> CreateAsync(Team team)
+        public async Task<IEnumerable<TeamMember?>> GetTeamMembersAsync(int teamId)
+        {
+            using var connection = _factory.CreateConnection();
+            return await connection.QueryAsync<TeamMember>("SELECT * FROM TeamMembers WHERE Team_id = @TeamId", new { TeamId = teamId });
+        }
+        public async Task<IEnumerable<Responsibility?>> GetResponsibilitiesByTeamAsync(int teamId)
+        {
+            using var connection = _factory.CreateConnection();
+            return await connection.QueryAsync<Responsibility>("SELECT * FROM Responsibilities WHERE Team_id = @TeamId", new { TeamId = teamId});
+        }
+
+        public async Task<int> CreateAsync(Team team)       
         {
             using var connection = _factory.CreateConnection();
             var sql = @"INSERT INTO Teams (Name)
@@ -39,6 +50,13 @@ namespace IDS.Repositories
             var sql = @"UPDATE Teams SET Name =@Name";
 
             var rowsAffected = await connection.ExecuteAsync(sql, team);
+            return rowsAffected > 0;
+        }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            using var connection = _factory.CreateConnection();
+            var sql = @"DELETE FROM Teams WHERE Id = @Id";
+            var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
             return rowsAffected > 0;
         }
     }

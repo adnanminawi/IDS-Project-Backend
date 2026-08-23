@@ -58,5 +58,13 @@ namespace IDS.Services
             return await _repository.UpdateAsync(existingMember);
 
         }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var member = await _repository.GetByIdAsync(id);
+            if (member == null)
+                return false;
+
+            return await _repository.DeleteAsync(id);
+        }
     }
 }

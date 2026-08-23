@@ -10,5 +10,6 @@ namespace IDS.Services.Interfaces
         Task<IEnumerable<Deployment>> GetDeploymentsByClientAsync(int clientId);
         Task<int> CreateAsync(CreateClientDto dto);
         Task<bool> UpdateAsync(int id, CreateClientDto dto);
+        Task<bool> DeleteAsync(int id);
     }
 }

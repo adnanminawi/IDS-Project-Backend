@@ -59,5 +59,16 @@ namespace IDS.Services
 
             return await _repository.UpdateAsync(existingClient);
         }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var client = await _repository.GetByIdAsync(id);
+            if (client == null)
+                return false;
+
+            var deployments = await _repository.GetDeploymentsByClientAsync(id);
+            if(deployments.Any())
+                throw new InvalidOperationException("Cannot delete a client that has deployments.");
+            return await _repository.DeleteAsync(id);
+        }
     }
 }

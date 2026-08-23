@@ -10,5 +10,6 @@ namespace IDS.Repositories.Interfaces
         Task<IEnumerable<Module>> GetModulesByDeploymentIdAsync(int deploymentId);
         Task<int> CreateAsync (Deployment deployment);
         Task<bool> UpdateAsync(Deployment deployment);
+        Task<bool> DeleteAsync(int id);
     }
 }

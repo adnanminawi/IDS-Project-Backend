@@ -14,5 +14,6 @@ namespace IDS.Services.Interfaces
         Task<IEnumerable<Deployment>> GetDeploymentsByProductAsync(int productId);
         Task<int> CreateAsync(CreateProductDto dto);
         Task<bool> UpdateAsync (int id, CreateProductDto dto);
+        Task<bool> DeleteAsync(int id);
     }
 }
