@@ -30,7 +30,12 @@ namespace IDS.Controllers
                 return NotFound();
             return Ok(team);
         }
-
+        [HttpGet("{teamId}/members")]
+        public async Task<IActionResult> GetMembers(int teamId)
+        {
+            var members = await _service.GetTeamMembersAsync(teamId);
+            return Ok(members);
+        }
         //POST
 
         [HttpPost]

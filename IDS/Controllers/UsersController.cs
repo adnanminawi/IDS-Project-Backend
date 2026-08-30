@@ -1,12 +1,14 @@
 ﻿using IDS.Models.Dtos;
 using IDS.Models.Entities;
 using IDS.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IDS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _service;

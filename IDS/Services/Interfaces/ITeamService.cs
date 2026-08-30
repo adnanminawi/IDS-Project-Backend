@@ -10,5 +10,6 @@ namespace IDS.Services.Interfaces
         Task<int> CreateAsync(CreateTeamDto dto);
         Task<bool> UpdateAsync(int id, CreateTeamDto dto);
         Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<TeamMember>> GetTeamMembersAsync(int teamId);
     }
 }

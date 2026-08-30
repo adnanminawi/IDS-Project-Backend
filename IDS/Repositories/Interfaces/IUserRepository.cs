@@ -8,5 +8,6 @@ namespace IDS.Repositories.Interfaces
         Task<User?> GetByIdAsync(int id);
         Task<int> CreateAsync(User user);
         Task<bool> UpdateAsync(User user);
+        Task<User?> GetByUsernameAsync(string username);
     }
 }

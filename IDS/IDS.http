@@ -4,3 +4,16 @@ GET {{IDS_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+### Login first
+POST https://localhost:7065/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "adnan12",
+  "password": "yourpassword"
+}
+
+### Then copy the token from the response and use it here
+GET https://localhost:7065/api/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6...

@@ -25,6 +25,13 @@ namespace IDS.Repositories
             using var connection = _factory.CreateConnection();
             return await connection.QueryFirstOrDefaultAsync<User>("SELECT * FROM Users WHERE Id = @Id", new { Id = id });
         }
+        
+        public async Task<User?> GetByUsernameAsync(string username)
+        {
+            using var connection = _factory.CreateConnection();
+            return await connection.QueryFirstOrDefaultAsync<User>("SELECT * FROM Users WHERE Username = @Username", new { Username = username });
+        }
+
         public async Task<int> CreateAsync(User user)
         {
             using var connection = _factory.CreateConnection();

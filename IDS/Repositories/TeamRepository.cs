@@ -47,7 +47,7 @@ namespace IDS.Repositories
         public async Task<bool> UpdateAsync(Team team)
         {
             using var connection = _factory.CreateConnection();
-            var sql = @"UPDATE Teams SET Name =@Name";
+            var sql = @"UPDATE Teams SET Name =@Name WHERE Id = @Id";
 
             var rowsAffected = await connection.ExecuteAsync(sql, team);
             return rowsAffected > 0;
