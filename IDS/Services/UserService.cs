@@ -13,13 +13,30 @@ namespace IDS.Services
         {
             _repository = repository;
         }
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            var users = await _repository.GetAllAsync();
+            return users.Select(u => new UserDto
+            {
+                Id = u.Id,
+                Username = u.Username,
+                Role = u.Role,
+                IsActive = u.IsActive
+            });
         }
-        public async Task<User?> GetByIdAsync(int id)
+        public async Task<UserDto?> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            var user = await _repository.GetByIdAsync(id);
+            if (user == null) 
+                return null;
+
+            return new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Role = user.Role,
+                IsActive = user.IsActive
+            };
         }
         public async Task<int> CreateAsync (CreateUserDto dto)
         {

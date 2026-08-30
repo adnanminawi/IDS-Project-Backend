@@ -1,12 +1,14 @@
 ﻿using IDS.Models.Dtos;
 using IDS.Models.Entities;
 using IDS.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IDS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _service;
@@ -74,6 +76,7 @@ namespace IDS.Controllers
         //POST
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CreateProductDto dto)
         {
             var newId = await _service.CreateAsync(dto);
@@ -83,6 +86,7 @@ namespace IDS.Controllers
         //PUT
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, CreateProductDto dto)
         {
             var success = await _service.UpdateAsync(id, dto);
@@ -96,6 +100,7 @@ namespace IDS.Controllers
         //Delete
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             try
