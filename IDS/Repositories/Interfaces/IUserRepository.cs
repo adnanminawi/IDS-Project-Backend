@@ -9,5 +9,6 @@ namespace IDS.Repositories.Interfaces
         Task<int> CreateAsync(User user);
         Task<bool> UpdateAsync(User user);
         Task<User?> GetByUsernameAsync(string username);
+        Task<bool> DeleteAsync(int id);
     }
 }

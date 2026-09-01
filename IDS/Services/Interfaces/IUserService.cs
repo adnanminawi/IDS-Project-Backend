@@ -8,6 +8,7 @@ namespace IDS.Services.Interfaces
         Task<IEnumerable<UserDto>> GetAllAsync();
         Task<UserDto?> GetByIdAsync(int id);
         Task<int> CreateAsync(CreateUserDto dto);
+        Task<bool> DeleteAsync(int id);
         
     }
 }

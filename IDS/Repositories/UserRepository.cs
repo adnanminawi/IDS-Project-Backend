@@ -25,7 +25,7 @@ namespace IDS.Repositories
             using var connection = _factory.CreateConnection();
             return await connection.QueryFirstOrDefaultAsync<User>("SELECT * FROM Users WHERE Id = @Id", new { Id = id });
         }
-        
+
         public async Task<User?> GetByUsernameAsync(string username)
         {
             using var connection = _factory.CreateConnection();
@@ -47,7 +47,14 @@ namespace IDS.Repositories
                        WHERE Id=@Id";
             var rowsAffected = await connection.ExecuteAsync(sql, user);
             return rowsAffected > 0;
-        
+
+        }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            using var connection = _factory.CreateConnection();
+            var sql = "DELETE FROM Users WHERE Id = @Id";
+            var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
+            return rowsAffected > 0;
         }
     }
 }

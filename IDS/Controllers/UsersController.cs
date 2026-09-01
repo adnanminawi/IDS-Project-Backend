@@ -42,5 +42,18 @@ namespace IDS.Controllers
             var newId = await _service.CreateAsync(dto);
             return Created();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleted = await _service.DeleteAsync(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
+
     }
 }

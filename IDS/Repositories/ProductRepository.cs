@@ -64,6 +64,22 @@ namespace IDS.Repositories
                 SELECT CAST(SCOPE_IDENTITY() AS INT);";
             return await connection.ExecuteScalarAsync<int>(sql, product);
         }
+        public async Task<int> CreateResponsibilityAsync(Responsibility responsibility)
+        {
+            using var connection = _factory.CreateConnection();
+            var sql = @"INSERT INTO Responsibilities (Product_id, Team_id, Description)
+                VALUES (@Product_id, @Team_id, @Description);
+                SELECT CAST(SCOPE_IDENTITY() as int);";
+            return await connection.QuerySingleAsync<int>(sql, responsibility);
+        }
+        public async Task<int> CreateModuleAsync(Module module)
+        {
+            using var connection = _factory.CreateConnection();
+            var sql = @"INSERT INTO Modules (Product_id, Name, Description, Status)
+                VALUES (@Product_id, @Name, @Description, @Status);
+                SELECT CAST(SCOPE_IDENTITY() as int);";
+            return await connection.QuerySingleAsync<int>(sql, module);
+        }
         public async Task<bool> UpdateAsync(Product product) 
         {
             using var connection = _factory.CreateConnection();

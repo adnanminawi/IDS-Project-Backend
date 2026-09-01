@@ -11,10 +11,12 @@ namespace IDS.Repositories.Interfaces
         Task<IEnumerable<Documentation>> GetDocumentationByProductAsync(int productId);
         Task<IEnumerable<Repository>> GetRepositoriesByProductAsync(int productId);
         Task<IEnumerable<Deployment>> GetDeploymentsByProductAsync(int productId);
+
         Task<int> CreateAsync(Product product);
         Task<bool> UpdateAsync(Product product);
         Task<bool> DeleteAsync(int id);
-
+        Task<int> CreateResponsibilityAsync(Responsibility responsibility);
+        Task<int> CreateModuleAsync(Module module);
 
     }
 }
