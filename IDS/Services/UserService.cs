@@ -27,7 +27,7 @@ namespace IDS.Services
         public async Task<UserDto?> GetByIdAsync(int id)
         {
             var user = await _repository.GetByIdAsync(id);
-            if (user == null) 
+            if (user == null)
                 return null;
 
             return new UserDto
@@ -38,7 +38,7 @@ namespace IDS.Services
                 IsActive = user.IsActive
             };
         }
-        public async Task<int> CreateAsync (CreateUserDto dto)
+        public async Task<int> CreateAsync(CreateUserDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Username))
                 throw new ArgumentException("Username is required.");
@@ -53,6 +53,14 @@ namespace IDS.Services
             };
             return await _repository.CreateAsync(user);
 
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var user = await _repository.GetByIdAsync(id);
+            if (user == null)
+                return false;
+            return await _repository.DeleteAsync(id);
         }
     }
 }

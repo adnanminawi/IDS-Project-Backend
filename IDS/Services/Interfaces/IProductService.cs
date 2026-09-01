@@ -15,5 +15,7 @@ namespace IDS.Services.Interfaces
         Task<int> CreateAsync(CreateProductDto dto);
         Task<bool> UpdateAsync (int id, CreateProductDto dto);
         Task<bool> DeleteAsync(int id);
+        Task<int> CreateResponsibilityAsync(int productId, CreateResponsibilityDto dto);
+        Task<int> CreateModuleAsync(int productId, CreateModuleDto dto);
     }
 }

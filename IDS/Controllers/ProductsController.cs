@@ -83,6 +83,23 @@ namespace IDS.Controllers
             return Created();
         }
 
+
+        [HttpPost("{productId}/responsibilities")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddResponsibility(int productId, CreateResponsibilityDto dto)
+        {
+            var newId = await _service.CreateResponsibilityAsync(productId, dto);
+            return Created();
+        }
+
+        [HttpPost("{productId}/modules")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddModule(int productId, CreateModuleDto dto)
+        {
+            var newId = await _service.CreateModuleAsync(productId, dto);
+            return Created();
+        }
+
         //PUT
 
         [HttpPut("{id}")]

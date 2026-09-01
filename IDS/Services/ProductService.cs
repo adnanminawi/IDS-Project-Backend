@@ -61,6 +61,28 @@ namespace IDS.Services
             };
             return await _repository.CreateAsync(product);
         }
+        public async Task<int> CreateResponsibilityAsync(int productId, CreateResponsibilityDto dto)
+        {
+            var responsibility = new Responsibility
+            {
+                Product_id = productId,
+                Team_id = dto.Team_id,
+                Description = dto.Description
+            };
+            return await _repository.CreateResponsibilityAsync(responsibility);
+        }
+        public async Task<int> CreateModuleAsync(int productId, CreateModuleDto dto)
+        {
+            var module = new Module
+            {
+                Product_id = productId,
+                Name = dto.Name,
+                Description = dto.Description,
+                Status = dto.Status
+            };
+            return await _repository.CreateModuleAsync(module);
+        }
+
         public async Task<bool> UpdateAsync(int id, CreateProductDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Name))
