@@ -35,15 +35,15 @@ namespace IDS.Repositories
         public async Task<int> CreateAsync(User user)
         {
             using var connection = _factory.CreateConnection();
-            var sql = @"INSERT INTO Users (Username, Password, Role, IsActive)
-                VALUES (@Username, @Password, @Role, @IsActive);
-                SELECT CAST(SCOPE_IDENTITY() as int);";
+            var sql = @"INSERT INTO Users (Username, Password,TeamMember_id, Role, IsActive)
+                VALUES (@Username, @Password, @TeamMember_id, @Role, @IsActive);
+                SELECT CAST(SCOPE_IDENTITY() as int);"; 
             return await connection.ExecuteScalarAsync<int>(sql, user);
         }
         public async Task<bool> UpdateAsync(User user)
         {
             using var connection = _factory.CreateConnection();
-            var sql = @"UPDATE Users SET Username =@Username, Password= @Password, Role=@Role, IsActive=@IsActive
+            var sql = @"UPDATE Users SET Username =@Username, Password= @Password, TeamMember_id=@TeamMember_id, Role=@Role, IsActive=@IsActive
                        WHERE Id=@Id";
             var rowsAffected = await connection.ExecuteAsync(sql, user);
             return rowsAffected > 0;
