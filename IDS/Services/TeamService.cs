@@ -26,6 +26,10 @@ namespace IDS.Services
         {
             return await _repository.GetTeamMembersAsync(teamId);
         }
+        public async Task<IEnumerable<Responsibility>> GetResponsibilitiesByTeamAsync(int teamId)
+        {
+            return await _repository.GetResponsibilitiesByTeamAsync(teamId);
+        }
         public async Task<int> CreateAsync(CreateTeamDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Name))

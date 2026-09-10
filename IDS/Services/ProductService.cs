@@ -42,6 +42,13 @@ namespace IDS.Services
         {
             return await _repository.GetDeploymentsByProductAsync(productId);
         }
+        public async Task<IEnumerable<Product>> GetProductsByTeamAsync(string? position, int? teamId)
+        {
+            if ((position == "Developer" || position == "Team Leader") && teamId.HasValue)
+                return await _repository.GetProductsByTeamAsync(teamId.Value);
+
+            return await _repository.GetAllAsync();
+        }
         public async Task<int> CreateAsync(CreateProductDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Name))
@@ -114,9 +121,10 @@ namespace IDS.Services
             if (deployments.Any())
                 throw new InvalidOperationException("Cannot delete a product that has deployments.");
 
-            var modules = await _repository.GetModulesByProductAsync(id);
-            if (modules.Any())
-                throw new InvalidOperationException("Cannot delete a product that has modules.");
+            await _repository.DeleteModulesByProductAsync(id);
+
+            await _repository.DeleteResponsibilitiesByProductAsync(id);
+
 
             return await _repository.DeleteAsync(id);
 

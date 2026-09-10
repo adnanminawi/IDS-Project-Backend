@@ -21,7 +21,8 @@ namespace IDS.Services
                 Id = u.Id,
                 Username = u.Username,
                 Role = u.Role,
-                IsActive = u.IsActive
+                IsActive = u.IsActive,
+                TeamMember_id = u.TeamMember_id,
             });
         }
         public async Task<UserDto?> GetByIdAsync(int id)

@@ -1,5 +1,6 @@
 ﻿using IDS.Models.Dtos;
 using IDS.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace IDS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TeamsController : ControllerBase
     {
         private readonly ITeamService _service;
@@ -35,6 +37,12 @@ namespace IDS.Controllers
         {
             var members = await _service.GetTeamMembersAsync(teamId);
             return Ok(members);
+        }
+        [HttpGet("{teamId}/responsibilities")]
+        public async Task<IActionResult> GetResponsibilitiesByTeamAsync(int teamId)
+        {
+            var responsibilities = await _service.GetResponsibilitiesByTeamAsync(teamId);
+            return Ok(responsibilities);
         }
         //POST
 

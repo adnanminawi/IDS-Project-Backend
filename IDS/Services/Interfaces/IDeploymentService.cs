@@ -9,6 +9,7 @@ namespace IDS.Services.Interfaces
         Task<Deployment?> GetByIdAsync(int id);
         Task<IEnumerable<Environment?>> GetEnvironmentsByDeploymentIdAsync(int deploymentId);
         Task<IEnumerable<Module?>> GetModulesByDeploymentIdAsync(int deploymentId);
+        Task<IEnumerable<Deployment>> GetDeploymentsByTeamAsync(string? position, int? teamId);
         Task<int> CreateAsync(CreateDeploymentDto dto);
         Task<bool> UpdateAsync(int id, CreateDeploymentDto dto);
         Task<bool> DeleteAsync(int id);

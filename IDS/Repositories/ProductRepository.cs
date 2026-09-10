@@ -56,6 +56,14 @@ namespace IDS.Repositories
             return await connection.QueryAsync<Deployment>(
                 "SELECT * FROM Deployments WHERE Product_id = @ProductId", new { ProductId = productId });
         }
+        public async Task<IEnumerable<Product>> GetProductsByTeamAsync(int teamId)
+        {
+            using var connection = _factory.CreateConnection();
+            return await connection.QueryAsync<Product>(
+                @"SELECT p.* FROM Products p
+                INNER JOIN Responsibilities r ON p.Id = r.Product_id
+                WHERE r.team_id = @TeamId", new { TeamId = teamId });
+        }
         public async Task<int> CreateAsync(Product product)
         {
             using var connection = _factory.CreateConnection();
@@ -96,6 +104,20 @@ namespace IDS.Repositories
                 WHERE Id = @Id";
 
             var rowsAffected = await connection.ExecuteAsync(sql, product);
+            return rowsAffected > 0;
+        }
+        public async Task<bool> DeleteModulesByProductAsync(int productId)
+        {
+            using var connection = _factory.CreateConnection();
+            var sql = "DELETE FROM Modules WHERE Product_id = @ProductId";
+            var rowsAffected = await connection.ExecuteAsync(sql, new { ProductId = productId });
+            return rowsAffected > 0;
+        }
+        public async Task<bool> DeleteResponsibilitiesByProductAsync(int productId)
+        {
+            using var connection = _factory.CreateConnection();
+            var sql = "DELETE FROM Responsibilities WHERE Product_id = @ProductId";
+            var rowsAffected = await connection.ExecuteAsync(sql, new { ProductId = productId });
             return rowsAffected > 0;
         }
         public async Task<bool> DeleteAsync(int id)

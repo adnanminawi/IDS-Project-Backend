@@ -40,6 +40,15 @@ namespace IDS.Repositories
             return await connection.QueryAsync<Module>(
             "SELECT m.* FROM Modules m INNER JOIN DeploymentModules dm ON m.id=dm.Modules_id WHERE dm.Deployment_id = @DeploymentId", new { DeploymentId = deploymentId });
         }
+        public async Task<IEnumerable<Deployment>> GetDeploymentsByTeamAsync(int teamId)
+        {
+            using var connection = _factory.CreateConnection();
+            var sql = @"SELECT d.* FROM Deployments d
+                       INNER JOIN Responsibilities r ON d.Product_id = r.Product_id
+                       WHERE r.Team_id = @TeamId";
+            return await connection.QueryAsync<Deployment>(sql, new { TeamId = teamId });
+        }
+
         public async Task<int> CreateAsync(Deployment deployment)
         {
             using var connection = _factory.CreateConnection();

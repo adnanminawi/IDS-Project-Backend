@@ -12,6 +12,7 @@ namespace IDS.Services.Interfaces
         Task<IEnumerable<Documentation>> GetDocumentationByProductAsync(int productId);
         Task<IEnumerable<Repository>> GetRepositoriesByProductAsync(int productId); 
         Task<IEnumerable<Deployment>> GetDeploymentsByProductAsync(int productId);
+        Task<IEnumerable<Product>> GetProductsByTeamAsync(string? position, int? teamId);
         Task<int> CreateAsync(CreateProductDto dto);
         Task<bool> UpdateAsync (int id, CreateProductDto dto);
         Task<bool> DeleteAsync(int id);
