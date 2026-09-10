@@ -8,7 +8,7 @@ namespace IDS.Helpers
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateToken(User user);
+        string GenerateToken(User user, string? position, int? teamId);
     }
 
     public class JwtTokenGenerator : IJwtTokenGenerator
@@ -20,17 +20,22 @@ namespace IDS.Helpers
             _config = config;
         }
 
-        public string GenerateToken(User user)
+        public string GenerateToken(User user, string? position, int? teamId)
         {
             
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role),
             };
+            if (position != null) {
+                claims.Add(new Claim("Position", position));
+            }
+            if (teamId != null) {
+                claims.Add(new Claim("TeamId", teamId.Value.ToString()));
+            }
 
-            
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

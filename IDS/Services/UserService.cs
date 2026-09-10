@@ -21,7 +21,8 @@ namespace IDS.Services
                 Id = u.Id,
                 Username = u.Username,
                 Role = u.Role,
-                IsActive = u.IsActive
+                IsActive = u.IsActive,
+                TeamMember_id = u.TeamMember_id,
             });
         }
         public async Task<UserDto?> GetByIdAsync(int id)
@@ -34,6 +35,7 @@ namespace IDS.Services
             {
                 Id = user.Id,
                 Username = user.Username,
+                TeamMember_id = user.TeamMember_id,
                 Role = user.Role,
                 IsActive = user.IsActive
             };
@@ -48,6 +50,7 @@ namespace IDS.Services
             {
                 Username = dto.Username,
                 Password = hashedPassword,
+                TeamMember_id = dto.TeamMember_id,
                 Role = dto.Role,
                 IsActive = dto.IsActive
             };

@@ -30,12 +30,13 @@ namespace IDS.Services
             var teammember = new TeamMember
             {
                 Name = dto.Name,
-                Job = dto.Job,
                 Department = dto.Department,
                 Email = dto.Email,
                 Status = dto.Status,
                 Team_id = dto.Team_id,
-                RoleInTeam = dto.RoleInTeam
+                RoleInTeam = dto.RoleInTeam,
+                Position = dto.Position,        
+                ManagerId = dto.ManagerId
             };
             return await _repository.CreateAsync(teammember);
         }
@@ -48,12 +49,13 @@ namespace IDS.Services
                 return false;
 
             existingMember.Name = dto.Name;
-            existingMember.Job = dto.Job;
             existingMember.Department = dto.Department;
             existingMember.Email = dto.Email;
             existingMember.Status = dto.Status;
             existingMember.Team_id = dto.Team_id;
             existingMember.RoleInTeam = dto.RoleInTeam;
+            existingMember.Position = dto.Position;
+            existingMember.ManagerId = dto.ManagerId;
 
             return await _repository.UpdateAsync(existingMember);
 

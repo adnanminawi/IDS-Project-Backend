@@ -35,6 +35,13 @@ namespace IDS.Services
         {
             return await _repository.GetModulesByDeploymentIdAsync(deploymentId);
         }
+        public async Task<IEnumerable<Deployment>> GetDeploymentsByTeamAsync(string? position, int? teamId)
+        {
+            if ((position == "Developer" || position == "Team Leader" || position == "Project Manager") && teamId.HasValue)
+                return await _repository.GetDeploymentsByTeamAsync(teamId.Value);
+
+            return await _repository.GetAllAsync();
+        }
         public async Task<int> CreateAsync(CreateDeploymentDto dto)
         {
             var client = await _clientRepository.GetByIdAsync(dto.Client_id);

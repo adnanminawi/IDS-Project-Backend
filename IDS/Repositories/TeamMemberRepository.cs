@@ -30,15 +30,15 @@ namespace IDS.Repositories
         {
             using var connection = _factory.CreateConnection();
 
-            var sql = @"INSERT INTO TeamMembers (Name, Job, Department, Email, Status, Team_id, RoleInTeam)
-                        VALUES (@Name, @Job, @Department, @Email, @Status, @Team_id, @RoleInTeam);
+            var sql = @"INSERT INTO TeamMembers (Name, Department, Email, Status, Team_id, RoleInTeam,Position, ManagerId)
+                        VALUES (@Name,  @Department, @Email, @Status, @Team_id, @RoleInTeam, @Position, @ManagerId);
                         SELECT CAST(SCOPE_IDENTITY() as int);";
             return await connection.QuerySingleAsync<int>(sql, teamMember);
         }
         public async Task<bool> UpdateAsync(TeamMember teamMember)
         {
             using var connection = _factory.CreateConnection();
-            var sql = @"UPDATE TeamMembers SET Name =@Name, Job=@Job, Department= @Department, Email =@Email, Status= @Status, Team_id= @Team_id, RoleInTeam=@RoleInTeam
+            var sql = @"UPDATE TeamMembers SET Name =@Name, Department= @Department, Email =@Email, Status= @Status, Team_id= @Team_id, RoleInTeam=@RoleInTeam, Position=@Position, ManagerId=@ManagerId
                        WHERE Id=@Id";
             var rowsAffected = await connection.ExecuteAsync(sql,teamMember);
             return rowsAffected >0;

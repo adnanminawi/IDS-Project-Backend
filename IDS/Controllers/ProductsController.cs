@@ -3,6 +3,8 @@ using IDS.Models.Entities;
 using IDS.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
+using System.Security.Claims;
 
 namespace IDS.Controllers
 {
@@ -17,13 +19,19 @@ namespace IDS.Controllers
         {
             _service = service;
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var products = await _service.GetAllAsync();
+            var position = User.FindFirst("Position")?.Value;
+            var teamIdClaim = User.FindFirst("TeamId")?.Value;
+            int? teamId = teamIdClaim != null ? int.Parse(teamIdClaim) : null;
+
+            var products = await _service.GetProductsByTeamAsync(position, teamId);
             return Ok(products);
         }
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -72,30 +80,43 @@ namespace IDS.Controllers
             return Ok(deployments);
         }
 
-
         //POST
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> Create(CreateProductDto dto)
         {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var position = User.FindFirst("Position")?.Value;
+            if (role != "Admin" && position != "Manager" && position != "CEO" && position != "Project Manager"  )
+                return Forbid();
+
             var newId = await _service.CreateAsync(dto);
             return Created();
         }
 
 
         [HttpPost("{productId}/responsibilities")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> AddResponsibility(int productId, CreateResponsibilityDto dto)
         {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var position = User.FindFirst("Position")?.Value;
+            if (role != "Admin" && position != "Manager" && position != "CEO")
+                return Forbid();
+
             var newId = await _service.CreateResponsibilityAsync(productId, dto);
             return Created();
         }
 
         [HttpPost("{productId}/modules")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> AddModule(int productId, CreateModuleDto dto)
         {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var position = User.FindFirst("Position")?.Value;
+            if (role != "Admin" && position != "Manager" && position != "CEO" && position != "Project Manager" && position != "Team Leader")
+                return Forbid();
             var newId = await _service.CreateModuleAsync(productId, dto);
             return Created();
         }
@@ -103,9 +124,14 @@ namespace IDS.Controllers
         //PUT
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> Update(int id, CreateProductDto dto)
         {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var position = User.FindFirst("Position")?.Value;
+            if (role != "Admin" && position != "Manager" && position != "CEO" && position != "Project Manager")
+                return Forbid();
+
             var success = await _service.UpdateAsync(id, dto);
             if (!success)
                 return NotFound();
@@ -117,9 +143,14 @@ namespace IDS.Controllers
         //Delete
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var position = User.FindFirst("Position")?.Value;
+            if (role != "Admin" && position != "Manager" && position != "CEO" && position != "Project Manager")
+                return Forbid();
+
             try
             {
                 var deleted = await _service.DeleteAsync(id);

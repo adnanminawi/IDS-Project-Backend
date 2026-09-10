@@ -1,5 +1,6 @@
 ﻿using IDS.Models.Dtos;
 using IDS.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace IDS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TeamMembersController : ControllerBase
     {
         private readonly ITeamMemberService _service;

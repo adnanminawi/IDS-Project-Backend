@@ -2,6 +2,7 @@
 using IDS.Models.Entities;
 using IDS.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace IDS.Controllers
 {
@@ -15,10 +16,20 @@ namespace IDS.Controllers
         {
             _service = service;
         }
+        private bool CanManageDeployments()
+        {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var position = User.FindFirst("Position")?.Value;
+            return role == "Admin" || position == "CEO" || position == "Manager" || position == "Project Manager";
+        }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var deployments = await _service.GetAllAsync();
+            var position = User.FindFirst("Position")?.Value;
+            var teamIdClaim = User.FindFirst("TeamId")?.Value;
+            int? teamId = teamIdClaim != null ? int.Parse(teamIdClaim) : null;
+
+            var deployments = await _service.GetDeploymentsByTeamAsync(position, teamId);
             return Ok(deployments);
         }
         [HttpGet("{id}")]
@@ -56,6 +67,8 @@ namespace IDS.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateDeploymentDto dto)
         {
+            if (!CanManageDeployments())
+                return Forbid();
             var newId = await _service.CreateAsync(dto);
             return Created();
         }
@@ -65,6 +78,8 @@ namespace IDS.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, CreateDeploymentDto dto)
         {
+            if (!CanManageDeployments())
+                return Forbid();
             var success = await _service.UpdateAsync(id, dto);
             if (!success)
                 return NotFound();
@@ -76,6 +91,8 @@ namespace IDS.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            if (!CanManageDeployments())
+                return Forbid();
             try
             {
                 var deleted = await _service.DeleteAsync(id);

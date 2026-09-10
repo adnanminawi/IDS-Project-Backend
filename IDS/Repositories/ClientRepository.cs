@@ -31,6 +31,17 @@ namespace IDS.Repositories
                 "SELECT * FROM Deployments WHERE Client_id = @ClientId",
                 new { ClientId = clientId });
         }
+        public async Task<IEnumerable<Client>> GetClientsByTeamAsync(int teamId)
+        {
+            using var connection = _factory.CreateConnection();
+            return await connection.QueryAsync<Client>(
+                @"SELECT DISTINCT c.* 
+                FROM Clients c
+                INNER JOIN Deployments d ON c.Id = d.Client_id
+                INNER JOIN Responsibilities r ON d.Product_id = r.Product_id
+                WHERE r.Team_id = @TeamId",
+            new { TeamId = teamId });
+        }
         public async Task<int> CreateAsync(Client client)
         {
             using var connection = _factory.CreateConnection();

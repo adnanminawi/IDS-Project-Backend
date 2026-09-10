@@ -28,6 +28,13 @@ namespace IDS.Services
         {
             return await _repository.GetDeploymentsByClientAsync(clientId);
         }
+        public async Task<IEnumerable<Client>> GetClientsByTeamAsync(string? position, int? teamId)
+        {
+            if ((position == "Developer" || position == "Team Leader" ) && teamId.HasValue)
+                return await _repository.GetClientsByTeamAsync(teamId.Value);
+
+            return await _repository.GetAllAsync();
+        }
         public async Task<int> CreateAsync(CreateClientDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Name))
